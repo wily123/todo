@@ -1,3 +1,8 @@
+<--! 
+http.vilsoni.info/demo/  
+
+!>
+<html>
 <head>
 <style>
 body{
@@ -95,17 +100,17 @@ float:right;
 top:2px;
 right:3px;
 color:white;
-display:none;
+ddisplay:none;
 }
 
 .Item span{
 border-radius:2px;
 cursor:pointer;
-margin:0px 1px;
+margin:0px 3px;
 padding:2px 4px;
-border:1px solid rgba(255,255,255,1);
 background: rgba(250,250,250,.6);
 }
+
 .Item span:hover{ background: rgba(250,250,250,1);}
 
 
@@ -200,7 +205,7 @@ width:100%;
 <div id="editItem" style="margin:6px auto; display:none;">
 <div style="padding:30px; background:#bbb; margin:20px;border-radius:10px;">
 <a style="text-align:left;float: left;margin-left: 30px;" id="editItemLabel">Edit Item:</a>
-<input type="text" class="inp"  placeholder="Today || Thing to do...  || green"  id="editItemInput" onkeypress="return OnKeypress(event)"  autocomplete="off" />
+<input type="text" class="inp"  placeholder="Today||Thing to do...||color"  id="editItemInput" onkeypress="return OnKeypress(event)"  autocomplete="off" />
 <input type="button" value="Cancel" onclick="CancelEditThis()" />
 <input type="button" value="Save Change" onclick="editThis(editing, '2')" />
 
@@ -210,7 +215,7 @@ width:100%;
 
 
 <div id="edit" style="margin:6px auto;">
-<input type="text" class="inp"  placeholder="Today || Thing to do... || 1"  id="shtoName" onkeypress="return OnKeypress(event)"  autocomplete="off" />
+<input type="text" class="inp"  placeholder="Today||Thing to do...||color"  id="shtoName" onkeypress="return OnKeypress(event)"  autocomplete="off" />
 <input type="button" value="Add" onclick="shto()" />
 <input type="button" value="Show more options" id="bshp" onclick="show('editPlus'); hideshow(this.id);"/>
 
@@ -352,7 +357,6 @@ var newo = gebi('shtoName').value;
 
 gebi('shtoName').value= "";
 var url= getData()+"___"+newo;
-alert(url);
 url = healthS(url);
 setData(url);
 }
@@ -389,9 +393,8 @@ function start(){ trupi="";
 	if(myStringArray[i] != ""){
 	trupi = trupi + 
 	'<div class="Item"><img  style="background:'+classi+'" onclick="ChangeThisColor(\''+i+'\')" src="'+icon+'" alt="'+ThingTD+
-	'"><div class="settings" ><span onclick="endThis(\''+myStringArray[i]+
-	'\'); return false;" class="blue" title="Finished">&#10003;</span><span onclick="editThis(\''+i+
-	'\', \'1\'); return false;" class="green" title="Edit">E</span><span  onclick="removeThis(\''+i+
+	'"><div class="settings" ><span onclick="endThis('+i+'); return false;" class="green" title="Finished">&#10003;</span><span onclick="editThis(\''+i+
+	'\', \'1\'); return false;"  class="blue"  title="Edit">E</span><span  onclick="removeThis(\''+i+
 	'\'); return false;" class="red" title="Delete">X</span></div><a href="http://'+ThingTD+'" title="'+myStringArray[i]+
 	'" target="_blank"><i>'+(i+1)+' '+TimeTD+'--\></i>'+shkurto(ThingTD,maxTextLength)+'</a></div>';
 	}
@@ -472,19 +475,32 @@ function editThis(vlera, pjesa){
 }
 
 
-
 function endThis(vlera){
-	var DetailsDate = vlera.split("||");
+	var myStringArray= getData().split("___");
+	var arrayLength = myStringArray.length;
+	var Reshti = myStringArray[vlera];	
+	var DetailsDate = Reshti.split("||");
 	var TimeTD= DetailsDate[0];
 	var ThingTD= DetailsDate[1];
-	var StatusTD= DetailsDate[2];	
-	var urlos = TimeTD+'||'+ThingTD+'||green';
-	var vlera1= getData().replace(vlera, urlos);
-	var vlera2= healthS(vlera1);
+	var StatusTD= DetailsDate[2];
+	StatusTD = "green";
+	if(StatusTD != null){
+	var urlos = TimeTD+'||'+ThingTD+'||'+StatusTD;
+	var vlera2="";
+	for (var i = 0; i < arrayLength; i++){
+	if(i == vlera){ vlera2 = vlera2 + urlos +'___'; continue;}
+	if(myStringArray[i]!= ""){vlera2 = vlera2+myStringArray[i]+'___';}
+	}
+	var vlera2= healthS(vlera2);
 	setData(vlera2);
 	start();
+	}
 	return false;
 }
+
+
+
+
 
 
 function ChangeThisColor(vlera){
@@ -495,7 +511,6 @@ function ChangeThisColor(vlera){
 	var TimeTD= DetailsDate[0];
 	var ThingTD= DetailsDate[1];
 	var StatusTD= DetailsDate[2];
-	var colorS=["green","blue","orange","red"];
 	StatusTD = prompt( "Color: green, blue, orange, red ...", StatusTD);
 	if(StatusTD != null){
 	var urlos = TimeTD+'||'+ThingTD+'||'+StatusTD;
