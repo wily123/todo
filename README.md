@@ -1,4 +1,4 @@
-<h1>todo</h1>
+<h1>todo html && js </h1>
 html js 
 
 <h4>This todo script use local storage for storing events. </h4>
